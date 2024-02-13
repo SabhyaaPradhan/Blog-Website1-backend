@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors')
 const { requestLogger, unknownEndpoint, errorHandler } = require('./utils/middleware');
 const app = express();
 const blogRouter = require('./controllers/blogs');
@@ -14,6 +15,9 @@ mongoose.connect(config.MONGODB_URI)
 
 app.use(express.json());
 app.use(requestLogger);
+
+app.use(cors())
+app.use(express.static("dist"))
 
 app.get('/', (req, res) => {
   res.end('Welcome to my application');
