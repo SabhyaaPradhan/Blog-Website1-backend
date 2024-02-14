@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const User = require('../models/user');
 const Blog = require('../models/blog')
 const jwt = require('jsonwebtoken');
@@ -15,7 +15,7 @@ userRouter.post("/register", async (req, res, next) => {
 
     try {
         const saltRounds = 10;
-        const passwordHash = await bcrypt.hash(password, saltRounds);
+        const passwordHash = await bcryptjs.hash(password, saltRounds);
 
         const user = new User({
             username,
@@ -42,7 +42,7 @@ userRouter.post("/login", async (req, res, next) => {
 
         if (user) {
             if ('passwordHash' in user && user.passwordHash) {
-                const samePassword = await bcrypt.compare(password, user.passwordHash);
+                const samePassword = await bcryptjs.compare(password, user.passwordHash);
 
                 if (samePassword) {
                     const userToken = {
